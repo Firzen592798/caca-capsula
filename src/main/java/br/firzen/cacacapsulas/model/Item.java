@@ -2,7 +2,9 @@ package br.firzen.cacacapsulas.model;
 
 public class Item {
 	
-	private long id;
+	private Long id;
+	
+	private Integer idApi;
 	
 	private String nome;
 	
@@ -10,13 +12,13 @@ public class Item {
 	
 	private Integer qtd;
 	
-	public Item(long id, String nome, String tipo, Integer qtd) {
-		new Item(id, nome, tipo);
+	public Item(Integer idApi, String nome, String tipo, Integer qtd) {
+		new Item(idApi, nome, tipo);
 		this.qtd = qtd;
 	}
 	
-	public Item(long id, String nome, String tipo) {
-		this.id = id;
+	public Item(Integer idApi, String nome, String tipo) {
+		this.idApi = idApi;
 		this.nome = nome;
 		this.tipo = tipo;
 	}
@@ -25,11 +27,11 @@ public class Item {
 		// TODO Auto-generated constructor stub
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -55,6 +57,14 @@ public class Item {
 
 	public void setQtd(Integer qtd) {
 		this.qtd = qtd;
+	}
+
+	public Integer getIdApi() {
+		return idApi;
+	}
+
+	public void setIdApi(Integer idApi) {
+		this.idApi = idApi;
 	}
 	
 

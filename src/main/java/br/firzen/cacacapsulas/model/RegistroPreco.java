@@ -2,10 +2,24 @@ package br.firzen.cacacapsulas.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class RegistroPreco {
 	
-	private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "id_item", referencedColumnName = "id")
 	private Item item;
 	
 	private double preco;
@@ -57,7 +71,7 @@ public class RegistroPreco {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("ID: ").append(item.getId()).append("\n")
+		sb.append("ID: ").append(item.getIdApi()).append("\n")
 		.append("Item: ").append(item.getNome()).append("\n")
 		.append("Preço: ").append(preco).append("\n")
 		.append("Data: ").append(dataCriacao);

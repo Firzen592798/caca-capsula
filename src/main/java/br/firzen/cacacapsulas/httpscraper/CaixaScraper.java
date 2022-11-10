@@ -22,20 +22,29 @@ public class CaixaScraper {
 		for (Element element : elements) {
 			RegistroPreco registro = new RegistroPreco();
 			registro.setItem(new Item());
-			registro.getItem().setNome(element.getElementsByClass("product-card__name--link").text());
-			Element oldPrice = element.getElementsByAttributeValue("data-price-type", "oldPrice").first();
-			if(oldPrice != null) {
-				registro.setPrecoOld(Double.valueOf(oldPrice.attr("data-price-amount")));
-			}
 			
-			Element finalPrice = element.getElementsByAttributeValue("data-price-type", "finalPrice").first();
-			if(finalPrice != null) {
-				registro.setPreco(Double.valueOf(finalPrice.attr("data-price-amount")));
-			}
+			Elements idItemElem = element.getElementsByClass("price-box");
 			
-			Element qtdCapsulasElem = element.getElementsByClass("product-card__capsules").select("b").first();
-			registro.getItem().setQtd(qtdCapsulasElem != null ? Integer.valueOf(qtdCapsulasElem.text().replaceAll("[^0-9]", "")) : null);			
-			lista.add(registro);
+			if(idItemElem.size() > 0) {
+				registro.getItem().setIdApi(Integer.valueOf(idItemElem.first().attr("data-product-id")));
+			
+				registro.getItem().setNome(element.getElementsByClass("product-card__name--link").text());
+				Element oldPrice = element.getElementsByAttributeValue("data-price-type", "oldPrice").first();
+				if(oldPrice != null) {
+					registro.setPrecoOld(Double.valueOf(oldPrice.attr("data-price-amount")));
+				}
+				
+				Element finalPrice = element.getElementsByAttributeValue("data-price-type", "finalPrice").first();
+				if(finalPrice != null) {
+					registro.setPreco(Double.valueOf(finalPrice.attr("data-price-amount")));
+				}
+				
+				Element qtdCapsulasElem = element.getElementsByClass("product-card__capsules").select("b").first();
+				registro.getItem().setQtd(qtdCapsulasElem != null ? Integer.valueOf(qtdCapsulasElem.text().replaceAll("[^0-9]", "")) : null);	
+					
+				registro.getItem().setTipo("CAIXA");
+				lista.add(registro);
+			}
 		}
 		return lista;
 	}
