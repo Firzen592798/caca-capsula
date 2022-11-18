@@ -1,0 +1,1 @@
+alter table registro_preco add column num_execucao integer;

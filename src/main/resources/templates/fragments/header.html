@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+  	<meta charset="UTF-8" /> 
+  </head>
+  <body>
+    <div th:fragment="header" >
+	<header>
+		<ul class="nav d-flex align-items-center">
+      	   <li class="nav-item">
+		    <img class="logo p-2 " src="https://aux3.iconspalace.com/uploads/645019229296460368.png"></img>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link text-white" aria-current="page" th:href="@{/unidade}">Capsulas</a>
+		  </li>
+		  		  <li class="nav-item">
+		    <a class="nav-link text-white" aria-current="page" th:href="@{/caixa}">Caixas</a>
+		  </li>
+		</ul>
+	</header>
+    </div>
+  </body>
+</html>

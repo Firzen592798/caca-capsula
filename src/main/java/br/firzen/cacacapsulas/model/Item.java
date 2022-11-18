@@ -1,24 +1,34 @@
 package br.firzen.cacacapsulas.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Item {
 	
+	@Id
+	@Column(name="id_item")
 	private Long id;
 	
-	private Integer idApi;
-	
+	@Column
 	private String nome;
 	
+	@Column
 	private String tipo; //CAIXA ou CAPSULA
 	
+	@Column
 	private Integer qtd;
 	
-	public Item(Integer idApi, String nome, String tipo, Integer qtd) {
-		new Item(idApi, nome, tipo);
+	public Item(Long id, String nome, String tipo, Integer qtd) {
+		new Item(id, nome, tipo);
 		this.qtd = qtd;
 	}
 	
-	public Item(Integer idApi, String nome, String tipo) {
-		this.idApi = idApi;
+	public Item(Long id, String nome, String tipo) {
+		this.id = id;
 		this.nome = nome;
 		this.tipo = tipo;
 	}
@@ -58,14 +68,4 @@ public class Item {
 	public void setQtd(Integer qtd) {
 		this.qtd = qtd;
 	}
-
-	public Integer getIdApi() {
-		return idApi;
-	}
-
-	public void setIdApi(Integer idApi) {
-		this.idApi = idApi;
-	}
-	
-
 }

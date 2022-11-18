@@ -3,6 +3,7 @@ package br.firzen.cacacapsulas.model;
 import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,29 +11,45 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 
+
+@NamedEntityGraph(
+  name = "registro-item-graph",
+  attributeNodes = {
+    @NamedAttributeNode("item"),
+  }
+)
 @Entity
 public class RegistroPreco {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id_registro_preco")
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "id_item", referencedColumnName = "id")
+	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE})
+	@JoinColumn(name = "id_item", referencedColumnName = "id_item")
 	private Item item;
 	
+	@Column
 	private double preco;
 	
+	@Column
 	private double precoOld;
 	
+	@Column
 	private LocalDateTime dataCriacao = LocalDateTime.now();
+	
+	@Column
+	private Integer numExecucao;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -71,10 +88,18 @@ public class RegistroPreco {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("ID: ").append(item.getIdApi()).append("\n")
+		sb.append("ID: ").append(item.getId()).append("\n")
 		.append("Item: ").append(item.getNome()).append("\n")
 		.append("Preço: ").append(preco).append("\n")
 		.append("Data: ").append(dataCriacao);
 		return sb.toString();
+	}
+
+	public Integer getNumExecucao() {
+		return numExecucao;
+	}
+
+	public void setNumExecucao(Integer numExecucao) {
+		this.numExecucao = numExecucao;
 	}
 }

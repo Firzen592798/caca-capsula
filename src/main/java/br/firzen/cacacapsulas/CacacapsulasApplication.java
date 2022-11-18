@@ -9,5 +9,4 @@ public class CacacapsulasApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CacacapsulasApplication.class, args);
 	}
-
 }

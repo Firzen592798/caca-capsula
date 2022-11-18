@@ -7,14 +7,13 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import br.firzen.cacacapsulas.model.Item;
 import br.firzen.cacacapsulas.model.RegistroPreco;
 
-
-
-
-public class CaixaScraper {
+@Component
+public class CaixaScraper implements IScraper{
 
 	public List<RegistroPreco> extract() throws IOException {
 		Elements elements = Jsoup.connect("https://www.nescafe-dolcegusto.com.br/sabores").get().getElementsByClass("product-card__info ");
@@ -26,7 +25,7 @@ public class CaixaScraper {
 			Elements idItemElem = element.getElementsByClass("price-box");
 			
 			if(idItemElem.size() > 0) {
-				registro.getItem().setIdApi(Integer.valueOf(idItemElem.first().attr("data-product-id")));
+				registro.getItem().setId(Long.valueOf(idItemElem.first().attr("data-product-id")));
 			
 				registro.getItem().setNome(element.getElementsByClass("product-card__name--link").text());
 				Element oldPrice = element.getElementsByAttributeValue("data-price-type", "oldPrice").first();
@@ -34,7 +33,8 @@ public class CaixaScraper {
 					registro.setPrecoOld(Double.valueOf(oldPrice.attr("data-price-amount")));
 				}
 				
-				Element finalPrice = element.getElementsByAttributeValue("data-price-type", "finalPrice").first();
+				Element finalPriceContainer = element.getElementsByClass("product-card__price--current").first();
+				Element finalPrice = finalPriceContainer.getElementsByClass("price-wrapper").first();
 				if(finalPrice != null) {
 					registro.setPreco(Double.valueOf(finalPrice.attr("data-price-amount")));
 				}

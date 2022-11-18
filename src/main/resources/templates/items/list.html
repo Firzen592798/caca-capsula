@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{/decorators/template}"
+>
+    <head>
+        <title></title>
+    <body>
+    	<section layout:fragment="content">
+    		<div class="d-flex justify-content-between align-items-center">
+    			<h1>Cápsulas</h1>
+    		</div>
+	        
+	        <table class="custom-table">
+		        <thead>
+		        	<tr>
+		        		<th scope="col">Item</th>
+		        		<th scope="col">Preço</th>
+		        		<th scope="col">Última atualização</th>
+		        		<th class="fixed-cell" scope="col">Ações</th>
+		        	</tr>
+		        </thead>
+		       	<tbody>
+			       	<tr th:each="registroPreco: ${registroPrecoLista}">
+			       		<td th:text="${registroPreco.item.nome}">></td>
+			       		<td th:text="'R$ '+${#numbers.formatDecimal(registroPreco.preco, 1, 'COMMA', 2, 'COMMA')}">></td>
+			       		<td th:text="${#temporals.format(registroPreco.dataCriacao, 'dd/MM/yyyy HH:mm')}">></td>
+			       		<td class="text-center">
+			       			<a class="btn btn-sm" href="#"><i class="bi bi-search"></i></a>
+			       		</td>
+			       	</tr>
+		       	</tbody>
+	       	</table>
+       	</section>
+    </body>
+</html>
