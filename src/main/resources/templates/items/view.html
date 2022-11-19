@@ -8,29 +8,27 @@
     <body>
     	<section layout:fragment="content">
     		<div class="d-flex justify-content-between align-items-center">
-    			<h1>Cápsulas</h1>
+    			<h1>Histórico de preços | [[${item.nome}]]</h1>
     		</div>
 	        
 	        <table class="custom-table">
 		        <thead>
 		        	<tr>
-		        		<th scope="col">Item</th>
 		        		<th scope="col">Preço</th>
-		        		<th scope="col">Última atualização</th>
-		        		<th class="fixed-cell" scope="col">Ações</th>
+		        		<th scope="col">Data</th>
 		        	</tr>
 		        </thead>
 		       	<tbody>
 			       	<tr th:each="registroPreco: ${registroPrecoLista}">
-			       		<td th:text="${registroPreco.item.nome}">></td>
 			       		<td th:text="'R$ '+${#numbers.formatDecimal(registroPreco.preco, 1, 'COMMA', 2, 'COMMA')}">></td>
 			       		<td th:text="${#temporals.format(registroPreco.dataCriacao, 'dd/MM/yyyy HH:mm')}">></td>
-			       		<td class="text-center">
-			       			<a class="btn btn-sm" th:href="@{/view/{id}(id=${registroPreco.item.id})}"><i class="bi bi-search"></i></a>
-			       		</td>
 			       	</tr>
 		       	</tbody>
-	       	</table>
+
+	       	</table>											
+   			<div class="space-between-center mt-2">
+       			<a class="btn btn-cancel" type="reset" th:href="@{/{tipo}(tipo=${item.pageName})}">Voltar</a>
+       		</div>
        	</section>
     </body>
 </html>

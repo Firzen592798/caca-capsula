@@ -68,4 +68,8 @@ public class Item {
 	public void setQtd(Integer qtd) {
 		this.qtd = qtd;
 	}
+	
+	public String getPageName() {
+		return tipo.equals("CAIXA") ? "caixa" : "unidade";
+	}
 }

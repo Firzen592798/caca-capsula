@@ -15,4 +15,7 @@ public interface RegistroPrecoRepository extends JpaRepository<RegistroPreco, Lo
 
 	@EntityGraph(value = "registro-item-graph", type = EntityGraph.EntityGraphType.LOAD)
 	public List<RegistroPreco> findByItemTipoAndNumExecucaoOrderByItemNome(String itemTipo, Integer numExecucao);
+	
+	@EntityGraph(value = "registro-item-graph", type = EntityGraph.EntityGraphType.LOAD)
+	public List<RegistroPreco> findByItemIdOrderByDataCriacaoDesc(Long id);
 }

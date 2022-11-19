@@ -45,4 +45,8 @@ public class RegistroPrecoService{
 		Integer numExecucao = findMaxNumExecucaoByTipo(tipo);
 		return repository.findByItemTipoAndNumExecucaoOrderByItemNome(tipo, numExecucao);
 	}
+	
+	public List<RegistroPreco> listarPorItem(Long idItem) {
+		return repository.findByItemIdOrderByDataCriacaoDesc(idItem);
+	}
 }
