@@ -3,8 +3,6 @@ package br.firzen.cacacapsulas;
 import java.io.IOException;
 import java.util.List;
 
-import br.firzen.cacacapsulas.httpscraper.CaixaScraper;
-import br.firzen.cacacapsulas.httpscraper.CapsulaScraper;
 import br.firzen.cacacapsulas.httpscraper.GraphQLScraper;
 import br.firzen.cacacapsulas.httpscraper.IScraper;
 import br.firzen.cacacapsulas.model.RegistroPreco;
