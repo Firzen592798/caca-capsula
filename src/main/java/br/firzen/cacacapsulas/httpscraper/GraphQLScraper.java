@@ -32,6 +32,7 @@ public class GraphQLScraper implements IScraper {
 		request.setEntity(params);
 		HttpResponse response = httpClient.execute(request);
 		String responseBody = EntityUtils.toString(response.getEntity());
+		System.out.println(responseBody);
 		JSONObject object = new JSONObject(responseBody);
 		JSONArray categoryList = object.getJSONObject("data").getJSONArray("categoryList");
 		for(int i = 0; i < categoryList.length(); i++) {
