@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{decorators/template}"
+>
+    <head>
+        <title></title>
+    <body>
+    	<section layout:fragment="content">
+    		<div class="d-flex justify-content-between align-items-center">
+    			<h1>Alerta de preços</h1>
+    		</div>
+	        <article>
+	       		<h2>Caixas</h2>
+	        	<div class="alerta-preco">
+	        		<th:block th:if="${alertaCaixa != null}">
+	        			<span th:text="'Alerta de preço criado em RS'+${#numbers.formatDecimal(alertaCaixa.preco, 1, 'COMMA', 2, 'COMMA')}"></span>
+	        			<a th:href="@{/alerta-precos/edit/{id}(id=${alertaCaixa.id})}">Editar alerta de preços</a>
+	        			<a th:href="@{/alerta-precos/caixa/delete}">Apagar alerta de preços</a>
+	        		</th:block>
+        			<th:block th:if="${alertaCaixa == null}">
+	        			<a th:href="@{/alerta-precos/caixa/form}">Criar alerta de preços</a>
+	        		</th:block>
+	        	</div>
+	        </article>
+        	<article>
+        		<h2>Cápsulas</h2>
+	        	<div class="alerta-preco">
+	        		<th:block th:if="${alertaCapsula != null}">
+		        		<span th:text="'Alerta de preço criado em RS'+${#numbers.formatDecimal(alertaCapsula.preco, 1, 'COMMA', 2, 'COMMA')}"></span>
+		        		<a th:href="@{/alerta-precos/edit/{id}(id=${alertaCapsula.id})}">Editar alerta de preços</a>
+		        		<a th:href="@{/alerta-precos/capsula/delete}">Apagar alerta de preços</a>
+	        		</th:block>
+	        		<th:block th:if="${alertaCapsula == null}">
+	        			<a th:href="@{/alerta-precos/capsula/form}">Criar alerta de preços</a>
+	        		</th:block>
+	        		
+	        	</div>
+	        </article>
+       	</section>
+    </body>
+</html>

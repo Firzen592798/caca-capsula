@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{decorators/template}"
+      >
+    <head>
+    	<!-- <link th:href="@{/global/global.css}" rel="stylesheet"> -->
+        <title></title>
+    </head>
+    <body>
+    	<section layout:fragment="content">
+    		<div class="form-container">	
+	        <h2>Novo entidade</h2>
+	        <hr />
+	       	<form th:object="${entidade}" th:action="@{/entidade/form}" method="post">
+	       		<input type="hidden" th:field="*{id}"/>
+	       		<div class="form-group col-md-4 col-12">
+	       			<label for="nome">Entidade: </label>
+	       			<input type="text" class="form-control " th:field="*{nome}">
+	       			<span th:if="${#fields.hasErrors('nome')}" class="field-error"  th:errors="*{nome}"></span>
+	       		</div>
+	       		<div class="space-between-center mt-2">
+	       		<a class="btn btn-cancel" th:href="@{/entidade}">Voltar</a>
+	       		<input class="btn btn-success" type="submit" th:value="|${id != null ? 'Salvar' : 'Cadastrar'}|" />
+	       		</div>
+	       	</form>
+	       	</div>
+       	</section>
+    </body>
+</html>

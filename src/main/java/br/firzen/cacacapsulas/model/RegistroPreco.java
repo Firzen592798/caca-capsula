@@ -85,6 +85,10 @@ public class RegistroPreco {
 		this.precoOld = precoOld;
 	}
 	
+	public Double getPrecoPorCapsula() {
+		return preco / item.getQtd();
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

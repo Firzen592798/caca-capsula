@@ -1,26 +1,41 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{decorators/template}"
->
+	  layout:decorate="~{decorators/template}">
+	  
     <head>
         <title></title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+     </head>  
     <body>
     	<section layout:fragment="content">
-    		<div class="d-flex justify-content-between align-items-center">
-    			<h1>Histórico de preços | [[${item.nome}]]</h1>
+    	
+	    	<div class="d-flex justify-content-between align-items-center">
+    			<h1>[[${item.nome}]]</h1>
     		</div>
-	        
+    		
+    		<div class="w-50">
+			  <canvas id="myChart"></canvas>
+			</div>
+	        <hr />
 	        <table class="custom-table">
 		        <thead>
 		        	<tr>
 		        		<th scope="col">Preço</th>
+		        		<th:block th:if="${#strings.equals(item.tipo,'CAIXA')}">
+			        		<th scope="col">Quantidade</th>
+			        		<th scope="col">Preço por cápsula</th>
+		        		</th:block>
 		        		<th scope="col">Data</th>
 		        	</tr>
 		        </thead>
 		       	<tbody>
 			       	<tr th:each="registroPreco: ${registroPrecoLista}">
 			       		<td th:text="'R$ '+${#numbers.formatDecimal(registroPreco.preco, 1, 'COMMA', 2, 'COMMA')}">></td>
+			       		<th:block th:if="${#strings.equals(item.tipo,'CAIXA')}">
+				       		<td th:text="${registroPreco.item.qtd}">></td>
+				       		<td th:text="'R$ '+${#numbers.formatDecimal(registroPreco.precoPorCapsula, 1, 'COMMA', 2, 'COMMA')}">></td>
+			       		</th:block>
 			       		<td th:text="${#temporals.format(registroPreco.dataCriacao, 'dd/MM/yyyy HH:mm')}">></td>
 			       	</tr>
 		       	</tbody>
@@ -29,6 +44,49 @@
    			<div class="space-between-center mt-2">
        			<a class="btn btn-cancel" type="reset" th:href="@{/{tipo}(tipo=${item.pageName})}">Voltar</a>
        		</div>
+       		<script th:inline="javascript">
+				function getDateArray(dataset){
+					var tam = Math.min(dataset.length, 30);
+					var arr = new Array();
+					var dt = new Date();
+					for(var i = 0; i < tam; i++){
+						arr.push(dataset[i].data.substring(5, 10).split('-').reverse().join('/'));
+					}
+					return arr;
+				}
+	
+				
+	       	    var dataset = /*[[${registroPrecoLista}]]*/;
+	       	 	
+	       	 	dataset = dataset.map((x) => ({'data': x.dataCriacao, 'preco': x.preco})).reverse();
+	       		var dataArray = getDateArray(dataset);
+    			const ctx = document.getElementById('myChart');
+    			 new Chart(ctx, {
+    				    type: 'line',
+    				    data:{
+   				    	  labels:  dataArray,
+   				    	  datasets: [{
+   				    	    label: 'Preço da caixa',
+   				    	    data: dataset.map(x => x.preco),
+   				    	    fill: false,
+   				    	    borderColor: 'rgb(75, 192, 192)',
+
+   				    	  }]
+   				    	},
+		   				     options: {
+		   				        scales: {
+		   				            y: {
+		   				                ticks: {
+		   				                    // Include a dollar sign in the ticks
+		   				                    callback: function(value, index, ticks) {
+		   				                        return 'R$' + value +',00';
+		   				                    }
+		   				                }
+		   				            }
+		   				        }
+		   				    }
+    				  });
+    		</script>
        	</section>
     </body>
 </html>

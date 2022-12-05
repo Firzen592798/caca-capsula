@@ -10,12 +10,16 @@
     		<div class="d-flex justify-content-between align-items-center">
     			<h1>Cápsulas</h1>
     		</div>
-	        
 	        <table class="custom-table">
 		        <thead>
 		        	<tr>
 		        		<th scope="col">Item</th>
 		        		<th scope="col">Preço</th>
+		        		<th:block th:if="${#strings.endsWith(#httpServletRequest.requestURI, 'caixa')}">
+			        		<th scope="col">Quantidade</th>
+			        		<th scope="col">Preço por bebida</th>
+		        		</th:block>
+		        		
 		        		<th scope="col">Última atualização</th>
 		        		<th class="fixed-cell" scope="col">Ações</th>
 		        	</tr>
@@ -24,6 +28,10 @@
 			       	<tr th:each="registroPreco: ${registroPrecoLista}">
 			       		<td th:text="${registroPreco.item.nome}">></td>
 			       		<td th:text="'R$ '+${#numbers.formatDecimal(registroPreco.preco, 1, 'COMMA', 2, 'COMMA')}">></td>
+			       		<th:block th:if="${#strings.endsWith(#httpServletRequest.requestURI, 'caixa')}">
+			       			<td th:text="${registroPreco.item.qtd}">></td>
+			       			<td th:text="'R$ '+${#numbers.formatDecimal(registroPreco.precoPorCapsula, 1, 'COMMA', 2, 'COMMA')}">></td>
+			       		</th:block>
 			       		<td th:text="${#temporals.format(registroPreco.dataCriacao, 'dd/MM/yyyy HH:mm')}">></td>
 			       		<td class="text-center">
 			       			<a class="btn btn-sm" th:href="@{/view/{id}(id=${registroPreco.item.id})}"><i class="bi bi-search"></i></a>

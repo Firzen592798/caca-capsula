@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{decorators/template}"
+      >
+    <head>
+    	<!-- <link th:href="@{/global/global.css}" rel="stylesheet"> -->
+        <title></title>
+    </head>
+    <body>
+    	<section layout:fragment="content">
+    		<div class="form-container">	
+	        <h2 th:text="${alertaPreco != null ? 'Editar alerta de preço' : 'Novo alerta de preço'}"></h2>
+	        <hr />
+	       	<form th:object="${alertaPreco}" th:action="@{/alerta-precos/form}" method="post">
+	       		<input type="hidden" th:field="*{id}"/>
+	       		<input type="hidden" th:field="*{tipo}"/>
+	       		<input type="hidden" th:field="*{usuario.id}"/>
+	       		<div class="form-group col-md-4 col-12">
+	       			<label for="preco">Preço alvo por [[${alertaPreco.tipo}]]: </label>
+	       			<input type="number"step="0.01"  class="form-control " th:field="*{preco}">
+	       			<span th:if="${#fields.hasErrors('preco')}" class="field-error"  th:errors="*{preco}"></span>
+	       		</div>
+	       		<div class="space-between-center mt-2">
+	       		<a class="btn btn-cancel" th:href="@{/alerta-precos}">Voltar</a>
+	       		<input class="btn btn-success" type="submit" th:value="|${id != null ? 'Salvar' : 'Cadastrar'}|" />
+	       		</div>
+	       	</form>
+	       	</div>
+       	</section>
+    </body>
+</html>

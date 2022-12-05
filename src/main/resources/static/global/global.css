@@ -21,10 +21,36 @@ header{
 }
 
 .logo{
-	width: 60px; 
+	width: 40px; 
 	height: auto;
 }
 
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.menu li a{color:#333; text-decoration:none; padding:5px 10px; display:block;}
+
+
+.menu li  ul{
+	position:absolute;
+	left: -30px;
+	background-color:#fff;
+	display:none;
+}
+
+.menu li:hover ul, .menu li.over ul{display:block;}
+
+.menu li ul li{
+	border:1px solid #c0c0c0;
+	display:block;
+	width:150px;
+}
 
 /* Inputs*/
 

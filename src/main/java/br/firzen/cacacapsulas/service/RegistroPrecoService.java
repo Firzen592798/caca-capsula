@@ -1,6 +1,8 @@
 package br.firzen.cacacapsulas.service;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import br.firzen.cacacapsulas.repository.ItemRepository;
 import br.firzen.cacacapsulas.repository.RegistroPrecoRepository;
 
 @Service
-public class RegistroPrecoService{
+public class RegistroPrecoService extends AbstractService<RegistroPreco>{
 	
 	@Autowired
 	private RegistroPrecoRepository repository;
@@ -48,5 +50,9 @@ public class RegistroPrecoService{
 	
 	public List<RegistroPreco> listarPorItem(Long idItem) {
 		return repository.findByItemIdOrderByDataCriacaoDesc(idItem);
+	}
+	
+	public List<RegistroPreco> listarPorDataHoje(){
+		return repository.findByDataHoje();
 	}
 }
