@@ -53,7 +53,7 @@ public class Main {
 
 	            protected PasswordAuthentication getPasswordAuthentication() {
 
-	                return new PasswordAuthentication(from, "fgaqhetxdibwrmib");
+	                return new PasswordAuthentication(from, "senha");
 
 	            }
 
