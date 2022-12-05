@@ -43,7 +43,7 @@ public class EnviarEmailService {
 	}
 	
 	public void sendMail(String to, String assunto, String msg) {
-		String from = "appcolecaodemangas@gmail.com";
+		String from = appEmail;
 
 		String host = "smtp.gmail.com";
 
@@ -56,7 +56,7 @@ public class EnviarEmailService {
 
 		Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(from, "fgaqhetxdibwrmib");
+				return new PasswordAuthentication(from, appPassword);
 			}
 		});
 		try {
