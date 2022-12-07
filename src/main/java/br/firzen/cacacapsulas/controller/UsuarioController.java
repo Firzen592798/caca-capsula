@@ -16,10 +16,21 @@ import br.firzen.cacacapsulas.service.UsuarioService;
 
 @Controller
 @RequestMapping("/usuario")
-public class UsuarioController  extends AbstractController<Usuario>{
+public class UsuarioController {// extends AbstractController<Usuario>{
 	
 	private final String URL_PAGE= "/usuario";
 
+	//protected final static String URL_PAGE = "";
+	
+	protected final static String URL_LIST = "/list";
+	
+	protected final static String URL_VIEW = "/view";
+	
+	protected final static String URL_FORM = "/form";
+	
+	protected final static String URL_EDIT = "/edit";
+	
+	protected final static String URL_DELETE = "/delete";
 	@Autowired
 	private UsuarioService service;
 
