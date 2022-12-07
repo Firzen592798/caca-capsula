@@ -18,7 +18,7 @@ import br.firzen.cacacapsulas.service.UsuarioService;
 @RequestMapping("/usuario")
 public class UsuarioController {// extends AbstractController<Usuario>{
 	
-	private final String URL_PAGE= "/usuario";
+	private final String URL_PAGE= "usuario";
 
 	//protected final static String URL_PAGE = "";
 	
