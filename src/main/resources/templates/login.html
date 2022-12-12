@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{decorators/public}">
     <head>
         <title>Spring Security Example </title>
     <style>
-    
-    	body{
-    		background: silver;
-    	}
     	.login-error{
     		background-color: magenta;
     		padding: 4px;
@@ -30,6 +28,16 @@
     		border-radius: 2px;
     		width: 100%;
     	}
+    	#btn-cadastro{
+    		color: black;
+    		background-color: white;
+    		cursor: pointer;
+    		padding: 5px;
+    		border-radius: 2px;
+    		width: 100%;
+    		text-decoration: none;
+    	}
+
     	.form-input{
     		display: flex;
     		margin: 10px 0px;
@@ -43,7 +51,7 @@
     </style>
     </head>
     <body>
-       
+       <section layout:fragment="content">
         <div class="login">
         	 <span class="login-error"  th:if="${param.error}">
 	            Usuário ou senha incorretos
@@ -61,8 +69,12 @@
 	            	<label> Password:</label>
 	            	<input type="password" name="password"/>
 	            </div>
-	            <div><input id="btn-login" type="submit" value="Login"/></div>
+	            <div class="button-group d-flex flex-column gap-2">
+	            	<input id="btn-login" type="submit" value="Login"/>
+	            	<a id="btn-cadastro" th:href="@{/cadastro}" class="text-center" type="submit">Cadastro</a>
+	            </div>
 	        </form>
         </div>
+        </section>
     </body>
 </html>

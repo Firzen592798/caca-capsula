@@ -15,7 +15,7 @@ import br.firzen.cacacapsulas.service.RegistroPrecoService;
 
 @RestController
 @RequestMapping("/importacao")
-public class MainController {
+public class ImportacaoController {
 	
 	@Autowired
 	private RegistroPrecoService registroPrecoService;

@@ -15,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity //Autoriza o Spring Security a suportar e prover a integração com Spring MVC
+@EnableGlobalMethodSecurity(prePostEnabled = true) //Habilita as configurações de segurança
 public class WebSecurityConfig {
 
     @Bean
