@@ -1,7 +1,7 @@
 package br.firzen.cacacapsulas.controller;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.firzen.cacacapsulas.model.Usuario;
-import br.firzen.cacacapsulas.service.UsuarioService;
 
 @Controller
 @RequestMapping("/usuario")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class UsuarioController extends AbstractController<Usuario>{
 	
 	private final String URL_PAGE= "usuario";

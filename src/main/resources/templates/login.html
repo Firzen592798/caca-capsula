@@ -36,6 +36,10 @@ body, html {
 	width: 100%;
 }
 
+#btn-login:hover{
+	background-color: #4B6ADE;
+}
+
 .form-input {
 	display: flex;
 	margin: 10px 0px;
@@ -59,6 +63,16 @@ body, html {
 	grid-template-columns: auto auto;
 	height: 100vh;
 }
+#btn-cadastro{
+	color: black;
+	text-decoration: none;
+}
+.button-group{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2em;
+}
 </style>
 </head>
 <body>
@@ -79,9 +93,11 @@ body, html {
 					<div class="form-input">
 						<label> Password:</label> <input type="password" name="password" />
 					</div>
-					<div>
-						<input id="btn-login" type="submit" value="Login" />
-					</div>
+					<div class="button-group">
+		            	<input id="btn-login" type="submit" value="Login"/>
+		            	<a id="btn-cadastro" th:href="@{/cadastro}" type="submit">Não tem conta? cadastre-se aqui</a>
+		            </div>
+		           
 				</form>
 			</div>
 		</section>
