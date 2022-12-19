@@ -8,7 +8,7 @@
     <body>
     	<section layout:fragment="content">
     		<div class="d-flex justify-content-between align-items-center">
-    			<h1>Cápsulas</h1>
+    			<h1 th:text="${#strings.endsWith(#httpServletRequest.requestURI, 'caixa') ? 'Caixas' : 'Cápsulas'}"></h1>
     		</div>
 	        <table class="custom-table">
 		        <thead>

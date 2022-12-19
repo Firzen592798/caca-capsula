@@ -27,11 +27,7 @@
 		    <a class="nav-link text-white" aria-current="page" th:href="@{/alerta-precos}">Alerta de preços</a>
 		  </li>
 		  <li class="nav-item dropdown" sec:authorize="hasAuthority('ADMIN')">
-		    <a class="nav-link text-white dropdown-btn" aria-current="page" href="#">Usuários</a>
-   		    <ul class="dropdown-content">
-   		    	<li> <a th:href="@{/usuario/form}">Cadastrar</a></li>
-   		    	<li> <a th:href="@{/usuario}">Listar</a></li>
-		    </ul>
+		     <a th:href="@{/usuario}">Usuários</a>
 		  </li>
 		  <li class="nav-item" sec:authorize="!isAuthenticated()">
 		  	 <a class="nav-link text-white" aria-current="page" th:href="@{/login}">Login</a>
