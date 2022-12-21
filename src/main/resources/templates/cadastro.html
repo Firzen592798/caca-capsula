@@ -2,35 +2,107 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{decorators/public}"
       >
     <head>
-    	<!-- <link th:href="@{/global/global.css}" rel="stylesheet"> -->
+    	<style>
+			body, html {
+			    margin: 0;
+			    padding: 0;
+			}
+			
+			.login-error {
+				background-color: magenta;
+				padding: 4px;
+			}
+			
+			.login {
+				position: relative;
+				background: #F6F4EC;
+				border: 1px solid black;
+				border-radius: 5px;
+				color: black;
+				max-width: 400px;
+				margin: 15% auto;
+				padding: 20px 20px;
+			}
+			
+			#btn-login {
+				color: white;
+				background-color: #60A2F6;
+				cursor: pointer;
+				padding: 10px 5px;
+				border-radius: 2px;
+				border-width: 0;
+				width: 100%;
+			}
+			
+			#btn-login:hover{
+				background-color: #4B6ADE;
+			}
+			
+			.form-input {
+				display: flex;
+				margin: 10px 0px;
+				justify-content: space-between;
+			}
+			
+			.form-input input {
+				padding: 5px;
+				border-radius: 5px;
+				width: 240px;
+			}
+			
+			#presentation-section{
+				background-color: #60A2F6;
+			}
+			#login-section{
+				background-color: white;
+			}
+			#container{
+				display: grid;
+				grid-template-columns: auto auto;
+				height: 100vh;
+			}
+			#btn-cadastro{
+				color: black;
+				text-decoration: none;
+			}
+			.button-group{
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 2em;
+			}
+			</style>
         <title></title>
     </head>
     <body>
-    	<section layout:fragment="content">
-    		<div class="form-container">	
-	        <h2>Cadastrar-se</h2>
-	        <hr />
-	       	<form th:object="${usuario}" th:action="@{/cadastro}" method="post">
-	       		<input type="hidden" th:field="*{id}"/>
-	       		<div class="form-group col-md-4 col-12">
-	       			<label for="nome">Email: </label>
-	       			<input type="text" class="form-control " th:field="*{email}">
-	       			<span th:if="${#fields.hasErrors('email')}" class="field-error"  th:errors="*{email}"></span>
-	       		</div>
-	       		<div class="form-group col-md-4 col-12">
-	       			<label for="nome">Senha: </label>
-	       			<input type="password" class="form-control " th:field="*{senha}">
-	       			<span th:if="${#fields.hasErrors('senha')}" class="field-error"  th:errors="*{senha}"></span>
-	       		</div>
-	       		<div class="space-between-center mt-2">
-	       		<a class="btn btn-cancel" th:href="@{/}">Voltar</a>
-	       		<input class="btn btn-success" type="submit" th:value="|${id != null ? 'Salvar' : 'Cadastrar'}|" />
-	       		</div>
-	       	</form>
-	       	</div>
-       	</section>
+	    <div id="container">
+	    	<section id="presentation-section">
+				
+			</section>
+	    	<section id="login-section">
+	    		<div class="login">
+			       	<form th:object="${usuario}" th:action="@{/cadastro}" method="post">
+			       		<input type="hidden" th:field="*{id}"/>
+			       		<div class="form-input">
+			       			<label for="nome">Email: </label>
+			       			<input type="text" class="form-control " th:field="*{email}">
+			       			<span th:if="${#fields.hasErrors('email')}" class="field-error"  th:errors="*{email}"></span>
+			       		</div>
+			       		<div class="form-input">
+			       			<label for="nome">Senha: </label>
+			       			<input type="password" class="form-control " th:field="*{senha}">
+			       			<span th:if="${#fields.hasErrors('senha')}" class="field-error"  th:errors="*{senha}"></span>
+			       		</div>
+			       		<div class="button-group">
+			       		
+			       		<input id="btn-login"  type="submit" th:value="|${id != null ? 'Salvar' : 'Cadastrar'}|" />
+			       			<a id="btn-cadastro" th:href="@{/}">Voltar</a>
+			       		</div>
+			       	</form>
+		       	</div>
+	       	</section>
+       	</div>
     </body>
 </html>

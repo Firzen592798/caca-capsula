@@ -1,81 +1,106 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{decorators/public}">
-    <head>
-        <title>Spring Security Example </title>
-    <style>
-    	.login-error{
-    		background-color: magenta;
-    		padding: 4px;
-    	}
-    	.login{
-    		position: relative;
-    		background: navy;
-    		border: 1px solid black;
-    		border-radius: 5px;
-    		color: white;
-    		max-width: 400px;
-    		margin: 15% auto;
-    		padding: 20px 20px;
-    	}
-    	#btn-login{
-    		color: black;
-    		background-color: orange;
-    		cursor: pointer;
-    		padding: 5px;
-    		border-radius: 2px;
-    		width: 100%;
-    	}
-    	#btn-cadastro{
-    		color: black;
-    		background-color: white;
-    		cursor: pointer;
-    		padding: 5px;
-    		border-radius: 2px;
-    		width: 100%;
-    		text-decoration: none;
-    	}
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<title>Spring Security Example</title>
+<style>
+body, html {
+    margin: 0;
+    padding: 0;
+}
 
-    	.form-input{
-    		display: flex;
-    		margin: 10px 0px;
-    		justify-content: space-between;
-    		align-items: center;
-    	}
-    	.form-input input{
-    		padding: 5px;
-    		border-radius: 5px;
-    		width: 240px;
-    	}
-    </style>
-    </head>
-    <body>
-       <section layout:fragment="content">
-        <div class="login">
-        	 <span class="login-error"  th:if="${param.error}">
-	            Usuário ou senha incorretos
-	        </span>
-	        <span class="login-error" th:if="${param.logout}">
-	            You have been logged out.
-	        </span>
-	        <h2>Login</h2>
-	        <form th:action="@{/login}" method="post">
-	            <div class="form-input">
-	            	<label> User Name : </label>
-	            	 <input type="text" name="username"/>
-	            </div>
-	            <div class="form-input">
-	            	<label> Password:</label>
-	            	<input type="password" name="password"/>
-	            </div>
-	            <div class="button-group d-flex flex-column gap-2">
-	            	<input id="btn-login" type="submit" value="Login"/>
-	            	<a id="btn-cadastro" th:href="@{/cadastro}" class="text-center" type="submit">Cadastro</a>
-	            </div>
-	        </form>
-        </div>
-        </section>
-    </body>
+.login-error {
+	background-color: magenta;
+	padding: 4px;
+}
+
+.login {
+	position: relative;
+	background: #F6F4EC;
+	border: 1px solid black;
+	border-radius: 5px;
+	color: black;
+	max-width: 400px;
+	margin: 15% auto;
+	padding: 20px 20px;
+}
+
+#btn-login {
+	color: white;
+	background-color: #60A2F6;
+	cursor: pointer;
+	padding: 10px 5px;
+	border-radius: 2px;
+	border-width: 0;
+	width: 100%;
+}
+
+#btn-login:hover{
+	background-color: #4B6ADE;
+}
+
+.form-input {
+	display: flex;
+	margin: 10px 0px;
+	justify-content: space-between;
+}
+
+.form-input input {
+	padding: 5px;
+	border-radius: 5px;
+	width: 240px;
+}
+
+#presentation-section{
+	background-color: #60A2F6;
+}
+#login-section{
+	background-color: white;
+}
+#container{
+	display: grid;
+	grid-template-columns: auto auto;
+	height: 100vh;
+}
+#btn-cadastro{
+	color: black;
+	text-decoration: none;
+}
+.button-group{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2em;
+}
+</style>
+</head>
+<body>
+	<div id="container">
+		<section id="presentation-section">
+			
+		</section>
+		<section id="login-section">
+			<div class="login">
+				<span class="login-error" th:if="${param.error}"> Usuário ou
+					senha incorretos </span> <span class="login-error" th:if="${param.logout}">
+					You have been logged out. </span>
+				<h2>Login</h2>
+				<form th:action="@{/login}" method="post">
+					<div class="form-input">
+						<label> User Name : </label> <input type="text" name="username" />
+					</div>
+					<div class="form-input">
+						<label> Password:</label> <input type="password" name="password" />
+					</div>
+					<div class="button-group">
+		            	<input id="btn-login" type="submit" value="Login"/>
+		            	<a id="btn-cadastro" th:href="@{/cadastro}" type="submit">Não tem conta? cadastre-se aqui</a>
+		            </div>
+		           
+				</form>
+			</div>
+		</section>
+	</div>
+</body>
 </html>
