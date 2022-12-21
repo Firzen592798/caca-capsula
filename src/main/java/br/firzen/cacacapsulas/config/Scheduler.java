@@ -3,7 +3,6 @@ package br.firzen.cacacapsulas.config;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,6 +15,7 @@ import br.firzen.cacacapsulas.model.RegistroPreco;
 import br.firzen.cacacapsulas.service.AlertaPrecoService;
 import br.firzen.cacacapsulas.service.EnviarEmailService;
 import br.firzen.cacacapsulas.service.RegistroPrecoService;
+import br.firzen.cacacapsulas.telegram.TelegramConnection;
 
 @Component
 public class Scheduler {
@@ -33,6 +33,9 @@ public class Scheduler {
     
     @Autowired
     private EnviarEmailService enviarEmailService;
+    
+    @Autowired
+    private TelegramConnection telegramConnection;
 
     //Executa a ação de 10h todo dia
     @Scheduled(cron = "0 0 10 * * *")
@@ -63,7 +66,12 @@ public class Scheduler {
     		List<RegistroPreco> listaPrecosUsuario = registroPrecolista.stream().filter((x) -> executarFiltro(x, alertaPreco)).collect(Collectors.toList());
     		enviarEmailService.sendMailAlertaCapsula(alertaPreco, listaPrecosUsuario);
     	}
-    	
-    	
+    }
+    
+    //Executa a ação de 10:05h todo dia
+    //@Scheduled(cron = "0 5 10 * * *")
+    @Scheduled(initialDelay = 100, fixedRate = 1000000)
+    public void enviarMensagensTelegram(){
+    	telegramConnection.createConnection();
     }
 }

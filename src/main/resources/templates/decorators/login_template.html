@@ -33,7 +33,7 @@
 				padding: 4px;
 			}
 			
-			.login {
+			.form {
 				position: relative;
 				background: #F6F4EC;
 				border: 1px solid black;
@@ -44,7 +44,7 @@
 				padding: 20px 20px;
 			}
 			
-			#btn-login {
+			#btn-action {
 				color: white;
 				background-color: #60A2F6;
 				cursor: pointer;
@@ -54,7 +54,7 @@
 				width: 100%;
 			}
 			
-			#btn-login:hover{
+			#btn-action:hover{
 				background-color: #4B6ADE;
 			}
 			
@@ -73,7 +73,7 @@
 			#presentation-section{
 				background-color: #60A2F6;
 			}
-			#login-section{
+			#form-section{
 				background-color: white;
 			}
 			#container{
@@ -81,7 +81,7 @@
 				grid-template-columns: auto auto;
 				height: 100vh;
 			}
-			#btn-cadastro{
+			#btn-secondary{
 				color: black;
 				text-decoration: none;
 			}
@@ -91,10 +91,19 @@
 				align-items: center;
 				gap: 2em;
 			}
-			@media only screen and (max-width: 1200px){
-			    #login-section{
-			    	min-width: 800px;
+			@media only screen and (max-width: 720px){
+			    #container{
+			    	display: grid;
+					grid-template-columns: 0 auto;
+					height: 100vh;
 			    }
+			   	.form{
+			   		border: 0;
+			   		background: initial;
+			   	}
+			   	#form-section{
+			   		background: #F6F4EC;
+			   	}
 			}
 		</style>
 	</head>
@@ -107,8 +116,8 @@
 			<section id="presentation-section">
 				
 			</section>
-			<section id="login-section">
-				<div class="login">
+			<section id="form-section">
+				<div class="form">
 					<th:block layout:fragment="content" class="container">
 					
 					</th:block>

@@ -19,13 +19,13 @@ import br.firzen.cacacapsulas.model.AlertaPreco;
 import br.firzen.cacacapsulas.model.RegistroPreco;
 
 @Service
-@PropertySource(value = "application.properties")
+@PropertySource("classpath:config.properties")
 public class EnviarEmailService {
 
-	@Value("${APP_EMAIL}")
+	@Value("${app.email}")
 	public String appEmail;
 
-	@Value("${APP_PASSWORD}")
+	@Value("${app.password}")
 	public String appPassword;
 
 	public void sendMailAlertaCapsula(AlertaPreco alertaPreco, List<RegistroPreco> listaPrecosUsuario) {
