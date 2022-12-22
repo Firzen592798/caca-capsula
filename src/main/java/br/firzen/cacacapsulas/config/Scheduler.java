@@ -72,6 +72,6 @@ public class Scheduler {
     //@Scheduled(cron = "0 5 10 * * *")
     @Scheduled(initialDelay = 100, fixedRate = 1000000)
     public void enviarMensagensTelegram(){
-    	telegramConnection.createConnection();
+    	telegramConnection.prepararBot();
     }
 }
