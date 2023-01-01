@@ -9,4 +9,7 @@ Projeto desenvolvido com o intuito de capturar as melhores promoções de cápsu
 - Funcionamento para caixas e cápsulas
 - Possibilidade de auto-cadastro e escolher os alertas de preço
 - Notificação no momento só por email
-
+<div style="display: flex">
+<img width=500 src="https://user-images.githubusercontent.com/1834518/210185979-f8de8e3d-0b1c-4189-8443-af68ac768acd.png"></img>
+<img width=500 src="https://user-images.githubusercontent.com/1834518/210185982-c3cf3c1e-ef31-4619-9a84-ad0dbaf0d6c8.png"></img>
+</div>
