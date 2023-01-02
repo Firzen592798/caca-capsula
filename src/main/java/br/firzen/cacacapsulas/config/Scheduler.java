@@ -59,7 +59,7 @@ public class Scheduler {
     //Executa a ação de 10:05h todo dia
     @Scheduled(cron = "0 5 10 * * *")
     //@Scheduled(initialDelay = 100, fixedRate = 1000000)
-    public void executarEnvioAlertaPreco(){
+    public void executarEnvioEmailAlertaPreco(){
     	Iterable<AlertaPreco> alertaPrecoLista = alertaPrecoService.findAll();
     	List<RegistroPreco> registroPrecolista = rpService.listarPorDataHoje();
     	for(AlertaPreco alertaPreco: alertaPrecoLista) {
@@ -71,7 +71,14 @@ public class Scheduler {
     //Executa a ação de 10:05h todo dia
     //@Scheduled(cron = "0 5 10 * * *")
     @Scheduled(initialDelay = 100, fixedRate = 1000000)
-    public void enviarMensagensTelegram(){
+    public void prepararBotTelegram(){
     	telegramConnection.prepararBot();
+    }
+    
+    //Executa a ação de 10:05h todo dia
+    //@Scheduled(cron = "0 5 10 * * *")
+    @Scheduled(initialDelay = 100, fixedRate = 1000000)
+    public void dispararMensagensAgendadasTelegram(){
+    	telegramConnection.dispararMensagensAgendadas();
     }
 }

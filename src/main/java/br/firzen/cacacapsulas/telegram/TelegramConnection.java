@@ -1,5 +1,6 @@
 package br.firzen.cacacapsulas.telegram;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,10 +13,11 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.response.SendResponse;
 
 import br.firzen.cacacapsulas.model.AlertaPreco;
 import br.firzen.cacacapsulas.model.RegistroPreco;
+import br.firzen.cacacapsulas.model.TelegramChat;
+import br.firzen.cacacapsulas.repository.TelegramChatRepository;
 import br.firzen.cacacapsulas.service.AlertaPrecoService;
 import br.firzen.cacacapsulas.service.RegistroPrecoService;
 
@@ -32,7 +34,10 @@ public class TelegramConnection {
     @Autowired
     private AlertaPrecoService alertaPrecoService;
     
-	public String criarMensagem(List<RegistroPreco> listaPrecosUsuario){
+    @Autowired
+    private TelegramChatRepository repository;
+    
+	private String criarMensagem(List<RegistroPreco> listaPrecosUsuario){
 		if(listaPrecosUsuario.size() > 0) {
 			StringBuilder textoSb = new StringBuilder("Os seguintes itens estão em promoção:\n");
 			for(RegistroPreco rp: listaPrecosUsuario) {
@@ -47,7 +52,7 @@ public class TelegramConnection {
 		return "Não há promoções hoje";
 	}
 	
-    boolean executarFiltro(RegistroPreco reg, AlertaPreco alertaPreco){
+    private boolean executarFiltro(RegistroPreco reg, AlertaPreco alertaPreco){
     	int qtdItems = reg.getItem().getTipo().equals("CAIXA") ? 1 : reg.getItem().getQtd();
     	return reg.getPreco() / qtdItems <= alertaPreco.getPreco() && reg.getItem().getTipo().equals(alertaPreco.getTipo());
     }
@@ -60,20 +65,18 @@ public class TelegramConnection {
 		bot.setUpdatesListener(new UpdatesListener() {
 		    @Override
 		    public int process(List<Update> updates) {
-
 		        // process updates
 		    	updates.forEach(update -> {
 		    		long chatId = update.message().chat().id();
 		    		//String responseText = tratarMensagem(update.message().text());
-		    		
-		    		if(update.message().text().equals("/caixas")) {
-			    		Iterable<AlertaPreco> alertaPrecoLista = alertaPrecoService.findAll();
-			        	List<RegistroPreco> registroPrecolista = rpService.listarPorDataHoje();
-			        	for(AlertaPreco alertaPreco: alertaPrecoLista) {
-			        		List<RegistroPreco> listaPrecosUsuario = registroPrecolista.stream().filter((x) -> executarFiltro(x, alertaPreco)).collect(Collectors.toList());
-			        		String mensagemBot = criarMensagem(listaPrecosUsuario);
-			        		SendResponse response = bot.execute(new SendMessage(chatId, mensagemBot));
-			        	}
+		    		if(update.message().text().equals("/start")) {
+		    			processarRespostaStart(bot, chatId);
+		    		}else if(update.message().text().equals("/end")){
+		    			processarRespostaEnd(bot, chatId);
+		    		}
+		    		if(update.message().text().equals("/promocoes")) {
+		    			List<RegistroPreco> promocoes = encontrarListaPromocoes();
+		    			enviarMensagemPromocoes(promocoes, bot, chatId);
 		    		}
 		    	});
 				
@@ -85,16 +88,48 @@ public class TelegramConnection {
 
 	}
 	
-	
-	public String tratarMensagem(String text) {
-		String response;
-		switch(text) {
-			case "/start":
-				response = "Olá! Bem vindo ao bot de cápsulas de café da dolce gusto";
-				break;
-			default:
-				response = "Não há nada a ser tratado";
+	private void processarRespostaStart(TelegramBot bot, long chatId) {
+		TelegramChat chat = repository.findByChatId(chatId);
+		if(chat == null) {
+			chat = new TelegramChat();
+			chat.setChatId(chatId);
+			repository.save(chat);
+			bot.execute(new SendMessage(chatId, "Você foi registrado para receber notificações de promoções no bot"));
+		}else {
+			bot.execute(new SendMessage(chatId, "Você já está registrado no bot"));
 		}
-		return response;
+		
+	}
+	
+	private void processarRespostaEnd(TelegramBot bot, long chatId) {
+		TelegramChat chat = repository.findByChatId(chatId);
+		if((chat) != null) {
+			repository.deleteById(chat.getId());
+			bot.execute(new SendMessage(chatId, "Você cancelou o registro para receber notificações de promoções"));
+		}
+	}
+	
+	private void enviarMensagemPromocoes(List<RegistroPreco> listaPrecosUsuario, TelegramBot bot, long chatId) {
+		String mensagemBot = criarMensagem(listaPrecosUsuario);
+		bot.execute(new SendMessage(chatId, mensagemBot));
+	}	
+	
+	private List<RegistroPreco> encontrarListaPromocoes() {
+		Iterable<AlertaPreco> alertaPrecoLista = alertaPrecoService.findAll();
+    	List<RegistroPreco> registroPrecoBanco = rpService.listarPorDataHoje();
+    	List<RegistroPreco> listaPrecosUsuario = new LinkedList<>();
+    	for(AlertaPreco alertaPreco: alertaPrecoLista) {
+    		listaPrecosUsuario.addAll(registroPrecoBanco.stream().filter((x) -> executarFiltro(x, alertaPreco)).collect(Collectors.toList()));
+    	}
+    	return listaPrecosUsuario;
+	}
+	
+	public void dispararMensagensAgendadas(){
+		List<TelegramChat> chatLista = repository.findAll();
+		TelegramBot bot = new TelegramBot(TELEGRAM_API_KEY);
+		List<RegistroPreco> listaPromocoes = encontrarListaPromocoes();
+		chatLista.forEach(chat -> {
+			enviarMensagemPromocoes(listaPromocoes, bot, chat.getChatId());
+		});
 	}
 }
