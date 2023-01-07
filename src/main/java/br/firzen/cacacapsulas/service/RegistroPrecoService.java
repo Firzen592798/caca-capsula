@@ -2,6 +2,7 @@ package br.firzen.cacacapsulas.service;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -27,19 +28,23 @@ public class RegistroPrecoService extends AbstractService<RegistroPreco>{
 		salvarEmLote(lista);
 	}
 	
-	public void salvarEmLote(List<RegistroPreco> lista) {
-		if(lista.size() > 0) {
+	public List<RegistroPreco> salvarEmLote(List<RegistroPreco> lista) {
+		if(lista != null && lista.size() > 0) {
 			Integer numExecucao = findMaxNumExecucaoByTipo(lista.get(0).getItem().getTipo()) + 1;
 			for(RegistroPreco rp: lista) {
 				rp.setNumExecucao(numExecucao);
 				itemRepository.save(rp.getItem());
 			}
-			repository.saveAll(lista);
+			return repository.saveAll(lista);
 		}
+		return Arrays.asList();
 	}
 	
 	public Integer findMaxNumExecucaoByTipo(String tipo) {
 		RegistroPreco first = repository.findFirstByItemTipoOrderByNumExecucaoDesc(tipo);
+		if(first == null) {
+			return 0;
+		}
 		return first.getNumExecucao();
 	}
 	

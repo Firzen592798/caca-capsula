@@ -43,7 +43,8 @@ public class CaixaScraper implements IScraper{
 				registro.getItem().setQtd(qtdCapsulasElem != null ? Integer.valueOf(qtdCapsulasElem.text().replaceAll("[^0-9]", "")) : null);	
 					
 				registro.getItem().setTipo("CAIXA");
-				lista.add(registro);
+				if(registro.getItem().getQtd() != null && registro.getItem().getNome() != null && registro.getPreco() > 0)
+					lista.add(registro);	
 			}
 		}
 		return lista;

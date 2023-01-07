@@ -11,8 +11,10 @@ import org.springframework.stereotype.Component;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
+import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.SendResponse;
 
 import br.firzen.cacacapsulas.model.AlertaPreco;
 import br.firzen.cacacapsulas.model.RegistroPreco;
@@ -57,37 +59,33 @@ public class TelegramConnection {
     	return reg.getPreco() / qtdItems <= alertaPreco.getPreco() && reg.getItem().getTipo().equals(alertaPreco.getTipo());
     }
     
+    private void processarUpdates(TelegramBot bot, List<Update> updates) {
+		updates.forEach(update -> {
+    		long chatId = update.message().chat().id();
+    		//String responseText = tratarMensagem(update.message().text());
+    		if(update.message().text().equals("/start")) {
+    			processarRespostaStart(bot, chatId);
+    		}else if(update.message().text().equals("/end")){
+    			processarRespostaEnd(bot, chatId);
+    		}
+    		if(update.message().text().equals("/promocoes")) {
+    			List<RegistroPreco> promocoes = encontrarListaPromocoes();
+    			enviarMensagemPromocoes(promocoes, bot, chatId);
+    		}
+    	});
+    }
+    
 	public void prepararBot() {
 		// Create your bot passing the token received from @BotFather
 		TelegramBot bot = new TelegramBot(TELEGRAM_API_KEY);
-			
+		
 		// Register for updates
-		bot.setUpdatesListener(new UpdatesListener() {
-		    @Override
-		    public int process(List<Update> updates) {
-		        // process updates
-		    	updates.forEach(update -> {
-		    		long chatId = update.message().chat().id();
-		    		//String responseText = tratarMensagem(update.message().text());
-		    		if(update.message().text().equals("/start")) {
-		    			processarRespostaStart(bot, chatId);
-		    		}else if(update.message().text().equals("/end")){
-		    			processarRespostaEnd(bot, chatId);
-		    		}
-		    		if(update.message().text().equals("/promocoes")) {
-		    			List<RegistroPreco> promocoes = encontrarListaPromocoes();
-		    			enviarMensagemPromocoes(promocoes, bot, chatId);
-		    		}
-		    	});
-				
-		        return UpdatesListener.CONFIRMED_UPDATES_ALL;
-		    }
+		bot.setUpdatesListener(updates -> {
+			processarUpdates(bot, updates);
+			return UpdatesListener.CONFIRMED_UPDATES_ALL;
 		});
-
-		// Send messages
-
 	}
-	
+
 	private void processarRespostaStart(TelegramBot bot, long chatId) {
 		TelegramChat chat = repository.findByChatId(chatId);
 		if(chat == null) {

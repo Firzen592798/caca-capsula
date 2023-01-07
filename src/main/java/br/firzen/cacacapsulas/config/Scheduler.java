@@ -71,13 +71,6 @@ public class Scheduler {
     //Executa a ação de 10:05h todo dia
     //@Scheduled(cron = "0 5 10 * * *")
     @Scheduled(initialDelay = 100, fixedRate = 1000000)
-    public void prepararBotTelegram(){
-    	telegramConnection.prepararBot();
-    }
-    
-    //Executa a ação de 10:05h todo dia
-    //@Scheduled(cron = "0 5 10 * * *")
-    @Scheduled(initialDelay = 100, fixedRate = 1000000)
     public void dispararMensagensAgendadasTelegram(){
     	telegramConnection.dispararMensagensAgendadas();
     }
