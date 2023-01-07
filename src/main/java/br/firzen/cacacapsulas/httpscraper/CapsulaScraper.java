@@ -38,7 +38,6 @@ public class CapsulaScraper implements IScraper {
 
 		try (Response response = client.newCall(request).execute()) {
 			// Verifica se a resposta foi bem-sucedida
-			
 			if (response.isSuccessful()) {
 				String responseBody = response.body().string();
 				JSONObject object = new JSONObject(responseBody);
@@ -72,7 +71,7 @@ public class CapsulaScraper implements IScraper {
 				}
 				
 			} else {
-				System.out.println("Erro: " + response.code() +" "+response.body());
+				System.out.println("Erro: " + response.code());
 			}
 		}
 		return lista;
