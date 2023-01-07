@@ -28,7 +28,7 @@ public class CapsulaScraper implements IScraper {
 
 		@SuppressWarnings("deprecation")
 		Request request = new Request.Builder()
-				.url(url)
+				.url(url).header("mode", "no-cors")
 				.post(RequestBody.create(MediaType.parse("application/json"), requestBody))
 				.addHeader("User-Agent", "Mozilla/5.0")
 				.addHeader("accept", "*/*")
