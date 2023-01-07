@@ -44,7 +44,7 @@ public class ImportacaoController {
 		List<RegistroPreco> lista;
 		try {
 			lista = capsulaScraper.extract();
-			lista.stream().forEach(s -> System.out.println(s));
+			lista.stream().forEach(System.out::println);
 			registroPrecoService.salvarEmLote(lista);
 		} catch (IOException e) {
 			return "erro";
