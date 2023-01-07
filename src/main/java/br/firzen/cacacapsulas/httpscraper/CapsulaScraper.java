@@ -30,7 +30,7 @@ public class CapsulaScraper implements IScraper {
 		Request request = new Request.Builder()
 				.url(url)
 				.post(RequestBody.create(MediaType.parse("application/json"), requestBody))
-				.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:25.0) Gecko/20100101 Firefox/25.0")
+				.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0")
 				.addHeader("accept", "*/*")
 				.addHeader("content-type", "application/json")
 				.build();
