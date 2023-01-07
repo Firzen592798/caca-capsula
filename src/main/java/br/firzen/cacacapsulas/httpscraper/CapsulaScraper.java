@@ -19,6 +19,7 @@ import okhttp3.Response;
 @Component
 public class CapsulaScraper implements IScraper {
 	public List<RegistroPreco> extract() throws IOException {
+		OkHttpClient client = new OkHttpClient();
 
 		List<RegistroPreco> lista = new ArrayList<>();
 		String url = "https://www.nescafe-dolcegusto.com.br/graphql";
@@ -26,29 +27,14 @@ public class CapsulaScraper implements IScraper {
 
 
 		@SuppressWarnings("deprecation")
-//		Request request = new Request.Builder()
-//				.url(url)
-//				.post(RequestBody.create(MediaType.parse("application/json"), requestBody))
-//				.addHeader("User-Agent", "Mozilla/5.0")
-//				.addHeader("accept", "*/*")
-//				.addHeader("content-type", "application/json")
-//				.addHeader("Access-Control-Request-Method", "POST")
-//				.addHeader("Access-Control-Request-Headers", "Content-Type")
-//				.addHeader("Cookie", "_abck=F7341FB4116FFE36757E696DF0EC0D10~-1~YAAQl2dCF3CkPByFAQAAydZrjQmZEP5z7Zc8NLpFq0t0L1c8FvO6zFaWDSBcSzbaIIQL+3riMWcE02WD+qTDDAxEE3VvbCpu0AAgXAi/FmhYGf4BBARQcOi5UqCz+xK6TaF21MoRDi1XyusYsH9HvSGNOWZlvgKskPWYlfGJLCgXtWWYE4vwObxwNwXB06T4HuLDCkxSnTlUhdXunu1CBQPWU17R8N9ohqd0seM1U281yJ7ffkuXwAnINguGe+fueTaNGBJZ2CSrRftCIAQ065nk8e/KFv8mi+BlZ/cta1A+QzxLrEOgbXjae3zANgY9lMmkyZ8kWdPGgGDgtcrwTkGbDMceFblWO9i3MGhV3bcintxwnlAsJ88RpXRqn2SmPGK3ncySnbI0pP3VmbBud7i5bRSYTA==~-1~-1~-1; bm_sz=87D136479D781EFF48BA5083E4D3027A~YAAQl2dCF3GkPByFAQAAydZrjRKazTpVv5+7XdqZ4wj1sUcXOmQKBu5x0ZRjEttP0BUrGisNMZdo0Twwu1BihpgNXiKVuS/7GOe3qeUHS7dBt063LE5i4LpofFC070faMHzRDyzfPJ7cNTOuKj2iU/WCiZNDCKiWIMfbLWIWR7NymY3Xv9jD/kslNKo+nx+E0jhgcIvQtb2YMFT4ZYYKHxX9RPpjXWnwqypyf+77WfHZqqV4wsfgAjEUVk0hHw+SBwDb//zdR7nHCN3XUhTPEYpiCyVOE1Eb3zxHnsp5jthYxCV/CZBoKjC1v6HlpTVRXu4=~4408882~3621177; PHPSESSID=41931a8dbd12ad7818b84f508f6a9e3a; mage-messages=%5B%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%5D; private_content_version=f3e6412dee06aebb2957ada383c60300")
-//				.build();
-		
-		OkHttpClient client = new OkHttpClient().newBuilder()
-				  .build();
-				MediaType mediaType = MediaType.parse("application/json");
-				RequestBody body = RequestBody.create(mediaType, "{\"query\":\"query CategoryList{\\r\\n    categoryList(\\r\\n        filters: { ids: {eq:\\\"18\\\"}}\\r\\n    )\\r\\n    {\\r\\n        children{\\r\\n            id,\\r\\n            name,\\r\\n            products(sort: {position: ASC},pageSize: 100, currentPage: 1){\\r\\n                total_count,\\r\\n                items{\\r\\n                    id,\\r\\n                    name,\\r\\n                    stock_status,\\r\\n                    pods_per_cup,\\r\\n                    price_range{\\r\\n                        minimum_price{\\r\\n                            regular_price{\\r\\n                                value\\r\\n                            }\\r\\n                            final_price{\\r\\n                                value\\r\\n                            }\\r\\n                        }\\r\\n                    }\\r\\n                }\\r\\n            }\\r\\n        }\\r\\n    }\\r\\n}\",\"variables\":{}}");
-				Request request = new Request.Builder()
-				  .url("https://www.nescafe-dolcegusto.com.br/graphql")
-				  .method("POST", body)
-				  .addHeader("User-Agent", "Mozilla/5.0")
-				  .addHeader("Content-Type", "application/json")
-				  .addHeader("Cookie", "_abck=F7341FB4116FFE36757E696DF0EC0D10~-1~YAAQl2dCF3CkPByFAQAAydZrjQmZEP5z7Zc8NLpFq0t0L1c8FvO6zFaWDSBcSzbaIIQL+3riMWcE02WD+qTDDAxEE3VvbCpu0AAgXAi/FmhYGf4BBARQcOi5UqCz+xK6TaF21MoRDi1XyusYsH9HvSGNOWZlvgKskPWYlfGJLCgXtWWYE4vwObxwNwXB06T4HuLDCkxSnTlUhdXunu1CBQPWU17R8N9ohqd0seM1U281yJ7ffkuXwAnINguGe+fueTaNGBJZ2CSrRftCIAQ065nk8e/KFv8mi+BlZ/cta1A+QzxLrEOgbXjae3zANgY9lMmkyZ8kWdPGgGDgtcrwTkGbDMceFblWO9i3MGhV3bcintxwnlAsJ88RpXRqn2SmPGK3ncySnbI0pP3VmbBud7i5bRSYTA==~-1~-1~-1; bm_sz=87D136479D781EFF48BA5083E4D3027A~YAAQl2dCF3GkPByFAQAAydZrjRKazTpVv5+7XdqZ4wj1sUcXOmQKBu5x0ZRjEttP0BUrGisNMZdo0Twwu1BihpgNXiKVuS/7GOe3qeUHS7dBt063LE5i4LpofFC070faMHzRDyzfPJ7cNTOuKj2iU/WCiZNDCKiWIMfbLWIWR7NymY3Xv9jD/kslNKo+nx+E0jhgcIvQtb2YMFT4ZYYKHxX9RPpjXWnwqypyf+77WfHZqqV4wsfgAjEUVk0hHw+SBwDb//zdR7nHCN3XUhTPEYpiCyVOE1Eb3zxHnsp5jthYxCV/CZBoKjC1v6HlpTVRXu4=~4408882~3621177; PHPSESSID=41931a8dbd12ad7818b84f508f6a9e3a; mage-messages=%5B%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%2C%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Chave%20de%20formul%5Cu00e1rio%20inv%5Cu00e1lida.%20Por%20favor%2C%20atualize%20a%20p%5Cu00e1gina.%22%7D%5D; private_content_version=f3e6412dee06aebb2957ada383c60300")
-				  .build();
-				//Response response = client.newCall(request).execute();
+		Request request = new Request.Builder()
+				.url(url)
+				.post(RequestBody.create(MediaType.parse("application/json"), requestBody))
+				.addHeader("User-Agent", "Mozilla/5.0")
+				.addHeader("accept", "*/*")
+				.addHeader("content-type", "application/json")
+				.addHeader("Host", "www.nescafe-dolcegusto.com.br")
+				.build();
 
 		try (Response response = client.newCall(request).execute()) {
 			// Verifica se a resposta foi bem-sucedida
@@ -86,7 +72,7 @@ public class CapsulaScraper implements IScraper {
 				}
 				
 			} else {
-				System.out.println("Erro: " + response.code() +" "+response.exchange().toString()+" "+response.headers().toString());
+				System.out.println("Erro: " + response.code() +" "+response.body());
 			}
 		}
 		return lista;
