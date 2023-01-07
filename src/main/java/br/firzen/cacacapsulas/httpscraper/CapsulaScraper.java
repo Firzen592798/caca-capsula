@@ -30,6 +30,9 @@ public class CapsulaScraper implements IScraper {
 		Request request = new Request.Builder()
 				.url(url)
 				.post(RequestBody.create(MediaType.parse("application/json"), requestBody))
+				.addHeader("User-Agent", "Mozilla/5.0")
+				.addHeader("accept", "application/json")
+				.addHeader("content-type", "application/json")
 				.build();
 
 		try (Response response = client.newCall(request).execute()) {
@@ -68,8 +71,7 @@ public class CapsulaScraper implements IScraper {
 				}
 				
 			} else {
-				// Exibe o código de status da resposta
-				System.out.println("Erro: " + response.code());
+				System.out.println("Erro: " + response.message());
 			}
 		}
 		return lista;

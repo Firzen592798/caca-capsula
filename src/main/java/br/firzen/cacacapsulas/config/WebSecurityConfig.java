@@ -51,6 +51,7 @@ public class WebSecurityConfig {
         authorizeRequests()
 			.antMatchers("/login").permitAll()
 			.antMatchers("/alerta-precos/**").authenticated()
+			.antMatchers("/importacao/**").hasAnyAuthority("ADMIN")
 			.and()
 		.formLogin()
 			.loginPage("/login")

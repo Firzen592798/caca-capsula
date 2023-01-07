@@ -15,7 +15,7 @@ public class Startup {
 	
 	@PostConstruct
 	public void performStateChecks() {
-		telegramConn.prepararBot();
+		//telegramConn.prepararBot();
 	}
 
 }
