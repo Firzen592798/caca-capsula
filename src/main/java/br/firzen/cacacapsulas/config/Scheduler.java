@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import br.firzen.cacacapsulas.httpscraper.CaixaScraper;
-import br.firzen.cacacapsulas.httpscraper.GraphQLScraper;
+import br.firzen.cacacapsulas.httpscraper.CapsulaScraper;
 import br.firzen.cacacapsulas.model.AlertaPreco;
 import br.firzen.cacacapsulas.model.RegistroPreco;
 import br.firzen.cacacapsulas.service.AlertaPrecoService;
@@ -23,7 +23,7 @@ public class Scheduler {
 	private CaixaScraper caixaScraper;
 	
 	@Autowired
-	private GraphQLScraper capsulaScraper;
+	private CapsulaScraper capsulaScraper;
 	
     @Autowired
     private RegistroPrecoService rpService;
@@ -57,7 +57,7 @@ public class Scheduler {
     }
     
     //Executa a ação de 10:05h todo dia
-    @Scheduled(cron = "0 5 10 * * *")
+    //@Scheduled(cron = "0 5 10 * * *")
     //@Scheduled(initialDelay = 100, fixedRate = 1000000)
     public void executarEnvioEmailAlertaPreco(){
     	Iterable<AlertaPreco> alertaPrecoLista = alertaPrecoService.findAll();

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.firzen.cacacapsulas.httpscraper.CaixaScraper;
-import br.firzen.cacacapsulas.httpscraper.GraphQLScraper;
+import br.firzen.cacacapsulas.httpscraper.CapsulaScraper;
 import br.firzen.cacacapsulas.model.RegistroPreco;
 import br.firzen.cacacapsulas.service.RegistroPrecoService;
 
@@ -24,7 +24,7 @@ public class ImportacaoController {
 	private CaixaScraper caixaScraper;
 	
 	@Autowired
-	private GraphQLScraper capsulaScraper;
+	private CapsulaScraper capsulaScraper;
 	
 	@GetMapping("/caixa")
 	public String importar() {
