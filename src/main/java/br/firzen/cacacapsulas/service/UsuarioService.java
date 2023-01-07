@@ -1,18 +1,14 @@
 package br.firzen.cacacapsulas.service;
 
 import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.firzen.cacacapsulas.model.Papel;
 import br.firzen.cacacapsulas.model.Usuario;
 import br.firzen.cacacapsulas.repository.PapelRepository;
-import br.firzen.cacacapsulas.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService extends AbstractService<Usuario>{
