@@ -1,6 +1,7 @@
 package br.firzen.cacacapsulas;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
 
@@ -12,14 +13,21 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import br.firzen.cacacapsulas.httpscraper.GraphQLScraper;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import br.firzen.cacacapsulas.httpscraper.CapsulaScraper;
+import br.firzen.cacacapsulas.httpscraper.CapsulaScraperOld;
 import br.firzen.cacacapsulas.httpscraper.IScraper;
 import br.firzen.cacacapsulas.model.RegistroPreco;
 
 public class Main {
 	
 	public static void minerar() throws IOException {
-		IScraper caixa = new GraphQLScraper();
+		IScraper caixa = new CapsulaScraper();
 		List<RegistroPreco> lista = caixa.extract();
 		for(RegistroPreco reg: lista) {
 			System.out.println(reg.toString());
@@ -81,8 +89,9 @@ public class Main {
 	         mex.printStackTrace();
 	      }
 	}
+
 	
 	public static void main(String[] args) throws IOException {
-		sendMail();
+		//minerar();
 	}
 }

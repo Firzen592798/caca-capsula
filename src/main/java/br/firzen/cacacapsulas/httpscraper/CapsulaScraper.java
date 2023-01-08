@@ -3,9 +3,13 @@ package br.firzen.cacacapsulas.httpscraper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import br.firzen.cacacapsulas.model.Item;
@@ -17,23 +21,34 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 @Component
+@PropertySource("classpath:config.properties")
 public class CapsulaScraper implements IScraper {
+	
+	@Value("${url.capsulas}")
+	private String URL_CAPSULAS;
+	
+	
 	public List<RegistroPreco> extract() throws IOException {
-		OkHttpClient client = new OkHttpClient();
+		OkHttpClient client = new OkHttpClient.Builder()
+			      .connectTimeout(180, TimeUnit.SECONDS)
+			      .readTimeout(180, TimeUnit.SECONDS)
+			      .writeTimeout(180, TimeUnit.SECONDS)
+			      .build();
 
 		List<RegistroPreco> lista = new ArrayList<>();
-		String url = "https://www.nescafe-dolcegusto.com.br/graphql";
+		String url = URL_CAPSULAS;
 		String requestBody = "{\"query\":\"query CategoryList{categoryList(filters: { ids: {eq:\\\"18\\\"}}){children{id,name,products(sort: {position: ASC},pageSize: 100, currentPage: 1){total_count,items{id,name,stock_status,pods_per_cup,price_range{minimum_price{regular_price{value}final_price{value}}}}}}}}\"}";
 
 
 		@SuppressWarnings("deprecation")
 		Request request = new Request.Builder()
-				.url(url).header("mode", "no-cors")
+				.url(url)
 				.post(RequestBody.create(MediaType.parse("application/json"), requestBody))
 				.addHeader("User-Agent", "Mozilla/5.0")
 				.addHeader("accept", "*/*")
 				.addHeader("content-type", "application/json")
-				.addHeader("Host", "www.nescafe-dolcegusto.com.br")
+				//.addHeader("Host", "www.nescafe-dolcegusto.com.br")
+				//.addHeader(HttpHeaders.ORIGIN, "www.nescafe-dolcegusto.com.br")
 				.build();
 
 		try (Response response = client.newCall(request).execute()) {

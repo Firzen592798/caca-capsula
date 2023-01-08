@@ -23,7 +23,7 @@ public class GraphQLScraper implements IScraper {
 		List<RegistroPreco> lista = new ArrayList<>();
 		String requestBody = "{\"query\":\"query CategoryList{categoryList(filters: { ids: {eq:\\\"18\\\"}}){children{id,name,products(sort: {position: ASC},pageSize: 100, currentPage: 1){total_count,items{id,name,stock_status,pods_per_cup,price_range{minimum_price{regular_price{value}final_price{value}}}}}}}}\"}";
 		CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-		HttpPost request = new HttpPost("https://www.nescafe-dolcegusto.com.br/graphql");
+		HttpPost request = new HttpPost("https://crossorigin.me/https://www.nescafe-dolcegusto.com.br/graphql");
 
 		StringEntity params = new StringEntity(requestBody);
 		request.addHeader("content-type", "application/json");
