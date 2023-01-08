@@ -1,8 +1,6 @@
 package br.firzen.cacacapsulas.config;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -12,13 +10,14 @@ import br.firzen.cacacapsulas.httpscraper.CaixaScraper;
 import br.firzen.cacacapsulas.httpscraper.CapsulaScraper;
 import br.firzen.cacacapsulas.model.AlertaPreco;
 import br.firzen.cacacapsulas.model.RegistroPreco;
-import br.firzen.cacacapsulas.service.AlertaPrecoService;
-import br.firzen.cacacapsulas.service.EnviarEmailService;
 import br.firzen.cacacapsulas.service.RegistroPrecoService;
 import br.firzen.cacacapsulas.telegram.TelegramConnection;
 
 @Component
 public class Scheduler {
+	
+	public final static String BR_TIMEZONE = "GMT-3";
+	
 	@Autowired
 	private CaixaScraper caixaScraper;
 	
@@ -29,16 +28,10 @@ public class Scheduler {
     private RegistroPrecoService rpService;
     
     @Autowired
-    private AlertaPrecoService alertaPrecoService;
-    
-    @Autowired
-    private EnviarEmailService enviarEmailService;
-    
-    @Autowired
     private TelegramConnection telegramConnection;
 
     //Executa a ação de 10h todo dia
-    @Scheduled(cron = "0 0 10 * * *")
+    @Scheduled(cron = "0 0 10 * * *", zone = BR_TIMEZONE)
     public void executarImportacao(){
     	try {
     		rpService.executarImportacao(caixaScraper);
@@ -56,21 +49,9 @@ public class Scheduler {
     	return reg.getPreco() / qtdItems <= alertaPreco.getPreco() && reg.getItem().getTipo().equals(alertaPreco.getTipo());
     }
     
-    //Executa a ação de 10:05h todo dia
-    //@Scheduled(cron = "0 5 10 * * *")
-    //@Scheduled(initialDelay = 100, fixedRate = 1000000)
-    public void executarEnvioEmailAlertaPreco(){
-    	Iterable<AlertaPreco> alertaPrecoLista = alertaPrecoService.findAll();
-    	List<RegistroPreco> registroPrecolista = rpService.listarPorDataHoje();
-    	for(AlertaPreco alertaPreco: alertaPrecoLista) {
-    		List<RegistroPreco> listaPrecosUsuario = registroPrecolista.stream().filter((x) -> executarFiltro(x, alertaPreco)).collect(Collectors.toList());
-    		enviarEmailService.sendMailAlertaCapsula(alertaPreco, listaPrecosUsuario);
-    	}
-    }
     
     //Executa a ação de 10:05h todo dia
-    @Scheduled(cron = "0 5 10 * * *")
-    //@Scheduled(initialDelay = 100, fixedRate = 1000000)
+    @Scheduled(cron = "0 5 10 * * *", zone = BR_TIMEZONE)
     public void dispararMensagensAgendadasTelegram(){
     	telegramConnection.dispararMensagensAgendadas();
     }

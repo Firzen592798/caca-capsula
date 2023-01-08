@@ -1,6 +1,8 @@
 package br.firzen.cacacapsulas.telegram;
 
-import java.util.LinkedList;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,11 +16,9 @@ import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 
-import br.firzen.cacacapsulas.model.AlertaPreco;
 import br.firzen.cacacapsulas.model.RegistroPreco;
 import br.firzen.cacacapsulas.model.TelegramChat;
 import br.firzen.cacacapsulas.repository.TelegramChatRepository;
-import br.firzen.cacacapsulas.service.AlertaPrecoService;
 import br.firzen.cacacapsulas.service.RegistroPrecoService;
 
 //API utilizada: https://github.com/pengrad/java-telegram-bot-api
@@ -30,32 +30,41 @@ public class TelegramConnection {
 	
     @Autowired
     private RegistroPrecoService rpService;
-    
-    @Autowired
-    private AlertaPrecoService alertaPrecoService;
-    
+
     @Autowired
     private TelegramChatRepository repository;
     
-	private String criarMensagem(List<RegistroPreco> listaPrecosUsuario){
+	String criarMensagem(List<RegistroPreco> listaPrecosUsuario){
+		List<RegistroPreco> caixas = listaPrecosUsuario.stream().filter(x -> x.getItem().getTipo().equals("CAIXA")).collect(Collectors.toList());
+		List<RegistroPreco> capsulas = listaPrecosUsuario.stream().filter(x -> x.getItem().getTipo().equals("CAPSULA")).collect(Collectors.toList());
+		String data = "("+LocalDate.now(ZoneId.of("America/Sao_Paulo")).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + ")";
 		if(listaPrecosUsuario.size() > 0) {
-			StringBuilder textoSb = new StringBuilder("Os seguintes itens estão em promoção:\n");
-			for(RegistroPreco rp: listaPrecosUsuario) {
-				textoSb.append(rp.getItem().getNome())
-				.append( " - ")
-				.append("R$ "+String.format("%.2f",rp.getPreco()))
-				.append("\n");
+			StringBuilder textoSb = new StringBuilder(data+" Os seguintes itens estão em promoção\n");
+			
+			if(caixas.size() > 0) {
+				textoSb.append("Caixas:\n");
+				for(RegistroPreco rp: caixas) {
+					textoSb.append(rp.getItem().getNome())
+					.append( " - ")
+					.append("R$ "+String.format("%.2f",rp.getPreco()))
+					.append("\n");
+				}
 			}
+			if(capsulas.size() > 0) {
+				textoSb.append("Cápsulas:\n");
+				for(RegistroPreco rp: capsulas) {
+					textoSb.append(rp.getItem().getNome())
+					.append( " - ")
+					.append("R$ "+String.format("%.2f",rp.getPreco()))
+					.append("\n");
+				}
+			}
+			
 			textoSb.append("\nCaça-cápsulas");
 			return textoSb.toString();
 		}
-		return "Não há promoções hoje";
+		return data+" Não há promoções hoje";
 	}
-	
-    private boolean executarFiltro(RegistroPreco reg, AlertaPreco alertaPreco){
-    	int qtdItems = reg.getItem().getTipo().equals("CAIXA") ? 1 : reg.getItem().getQtd();
-    	return reg.getPreco() / qtdItems <= alertaPreco.getPreco() && reg.getItem().getTipo().equals(alertaPreco.getTipo());
-    }
     
     private void processarUpdates(TelegramBot bot, List<Update> updates) {
 		updates.forEach(update -> {
@@ -67,7 +76,7 @@ public class TelegramConnection {
     			processarRespostaEnd(bot, chatId);
     		}
     		if(update.message().text().equals("/promocoes")) {
-    			List<RegistroPreco> promocoes = encontrarListaPromocoes();
+    			List<RegistroPreco> promocoes = rpService.encontrarListaPromocoes();
     			enviarMensagemPromocoes(promocoes, bot, chatId);
     		}
     	});
@@ -110,20 +119,10 @@ public class TelegramConnection {
 		bot.execute(new SendMessage(chatId, mensagemBot));
 	}	
 	
-	private List<RegistroPreco> encontrarListaPromocoes() {
-		Iterable<AlertaPreco> alertaPrecoLista = alertaPrecoService.findAll();
-    	List<RegistroPreco> registroPrecoBanco = rpService.listarPorDataHoje();
-    	List<RegistroPreco> listaPrecosUsuario = new LinkedList<>();
-    	for(AlertaPreco alertaPreco: alertaPrecoLista) {
-    		listaPrecosUsuario.addAll(registroPrecoBanco.stream().filter((x) -> executarFiltro(x, alertaPreco)).collect(Collectors.toList()));
-    	}
-    	return listaPrecosUsuario;
-	}
-	
 	public void dispararMensagensAgendadas(){
 		List<TelegramChat> chatLista = repository.findAll();
 		TelegramBot bot = new TelegramBot(TELEGRAM_API_KEY);
-		List<RegistroPreco> listaPromocoes = encontrarListaPromocoes();
+		List<RegistroPreco> listaPromocoes = rpService.encontrarListaPromocoes();
 		chatLista.forEach(chat -> {
 			enviarMensagemPromocoes(listaPromocoes, bot, chat.getChatId());
 		});

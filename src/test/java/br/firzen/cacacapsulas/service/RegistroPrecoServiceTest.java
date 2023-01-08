@@ -65,4 +65,50 @@ public class RegistroPrecoServiceTest {
 		Assertions.assertEquals(2, response.get(0).getNumExecucao());
 		Assertions.assertEquals(2, response.get(1).getNumExecucao());
 	}
+	
+	@Test
+	public void listaPromocoesCaixaTest() {
+		RegistroPreco reg1 = RegistroPrecoBuilder.getDefault().withPreco(15.0).withItem(ItemBuilder.getDefault().withQtd(10).build()).build();
+		
+		Mockito.when(repository.findByDataHoje()).thenReturn(Arrays.asList(reg1));
+		// Chama o método encontrarListaPromocoes
+		List<RegistroPreco> listaPromocoes = service.encontrarListaPromocoes();
+		
+		// Verifica se o tamanho da lista de promoções retornada é igual a 2
+		Assertions.assertEquals(0, listaPromocoes.size());
+	}
+	
+	@Test
+	public void listaPromocoesCapsulaTest() {
+		RegistroPreco reg1 = RegistroPrecoBuilder.getDefault().withPreco(1.0).withItem(ItemBuilder.getDefault().withTipo("CAPSULA").build()).build();
+		
+		Mockito.when(repository.findByDataHoje()).thenReturn(Arrays.asList(reg1));
+		// Chama o método encontrarListaPromocoes
+		List<RegistroPreco> listaPromocoes = service.encontrarListaPromocoes();
+		
+		// Verifica se o tamanho da lista de promoções retornada é igual a 2
+		Assertions.assertEquals(1, listaPromocoes.size());
+	}
+	
+	
+	@Test
+	public void listaPromocoesTest() {
+		// Cria uma lista de registros de preço
+		// Adiciona dois registros de preços à lista
+		RegistroPreco reg1 = RegistroPrecoBuilder.getDefault().withPreco(15.0).withItem(ItemBuilder.getDefault().withQtd(10).build()).build();
+		RegistroPreco reg2 = RegistroPrecoBuilder.getDefault().withPreco(2.0).withItem(ItemBuilder.getDefault().withTipo("CAPSULA").build()).build();
+		RegistroPreco reg3 = RegistroPrecoBuilder.getDefault().withPreco(10.0).withItem(ItemBuilder.getDefault().withQtd(10).build()).build();
+		RegistroPreco reg4 = RegistroPrecoBuilder.getDefault().withPreco(1.0).withItem(ItemBuilder.getDefault().withTipo("CAPSULA").build()).build();
+		
+		Mockito.when(repository.findByDataHoje()).thenReturn(Arrays.asList(reg1, reg2, reg3, reg4));
+		// Chama o método encontrarListaPromocoes
+		List<RegistroPreco> listaPromocoes = service.encontrarListaPromocoes();
+		
+		// Verifica se o tamanho da lista de promoções retornada é igual a 2
+		Assertions.assertEquals(2, listaPromocoes.size());
+		
+		// Verifica se os dois primeiros elementos da lista de promoções são os registros de preço adicionados acima
+		Assertions.assertEquals(reg3, listaPromocoes.get(0));
+		Assertions.assertEquals(reg4, listaPromocoes.get(1));
+	}
 }

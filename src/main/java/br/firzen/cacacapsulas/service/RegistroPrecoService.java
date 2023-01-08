@@ -3,6 +3,7 @@ package br.firzen.cacacapsulas.service;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,21 @@ public class RegistroPrecoService extends AbstractService<RegistroPreco>{
 			return 0;
 		}
 		return first.getNumExecucao();
+	}
+	
+    private boolean executarFiltro(RegistroPreco reg){
+    	double preco = 1.4;
+    	int qtdItems = reg.getItem().getTipo().equals("CAIXA") ? reg.getItem().getQtd() : 1;
+    	return reg.getPreco() / qtdItems <= preco;
+    }
+	
+	public List<RegistroPreco> encontrarListaPromocoes() {
+    	List<RegistroPreco> registroPrecoBanco = listarPorDataHoje();
+    	List<RegistroPreco> listaPrecosUsuario = registroPrecoBanco.stream()
+    			.filter(this::executarFiltro)
+    			.sorted((x1, x2) -> x1.getItem().getTipo().compareTo(x2.getItem().getTipo()))
+    			.collect(Collectors.toList());
+    	return listaPrecosUsuario;
 	}
 	
 	public List<RegistroPreco> listarAtual(String tipo) {
